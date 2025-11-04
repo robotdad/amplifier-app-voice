@@ -1,0 +1,37 @@
+[project]
+name = "amplifier-app-voice"
+version = "0.1.0"
+description = "Voice assistant application powered by Amplifier and OpenAI Realtime API"
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Microsoft MADE:Explorations Team" }]
+dependencies = [
+    "click>=8.1.0",
+    "rich>=13.0.0",
+    "pyaudio>=0.2.14",
+    "numpy>=1.24.0",
+    "amplifier-core",
+]
+
+[project.scripts]
+amplifier-voice = "amplifier_app_voice.main:main"
+
+[tool.uv]
+package = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["amplifier_app_voice"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = ["pytest>=8.4.2"]
+
+[tool.uv.sources]
+amplifier-core = { git = "https://github.com/microsoft/amplifier-core", branch = "main" }
