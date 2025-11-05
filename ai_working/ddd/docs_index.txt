@@ -1,0 +1,9 @@
+[x] README.md
+[x] CHANGELOG.md
+[x] docs/ARCHITECTURE.md
+[x] docs/AUDIO_SETUP.md
+[x] docs/KEYBOARD_CONTROLS.md
+[x] docs/CONFIGURATION.md
+[x] examples/simple_conversation.sh
+[x] examples/config.yaml
+[x] pyproject.toml

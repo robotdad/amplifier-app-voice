@@ -1,0 +1,49 @@
+# Example configuration for amplifier-app-voice
+# Copy to: ~/.config/amplifier-voice/config.yaml
+
+# OpenAI Realtime API settings
+openai:
+  # API key (use environment variable for security)
+  api_key: ${OPENAI_API_KEY}
+
+  # Model selection
+  model: gpt-4o-realtime-preview-2024-12-17
+
+  # Voice (alloy, echo, shimmer, marin, cedar)
+  voice: alloy
+
+  # Temperature (0.0-1.0, higher = more creative)
+  temperature: 0.7
+
+  # Optional: Limit response length
+  max_response_tokens: null
+
+# Audio input/output settings
+audio:
+  # Device indices (null = system default)
+  # Run: python -m amplifier_app_voice.audio.utils --list-devices
+  input_device: null
+  output_device: null
+
+  # Sample rate (must be 24000 for OpenAI Realtime)
+  sample_rate: 24000
+
+  # Buffer size (larger = more latency, more stable)
+  buffer_size: 1024
+
+  # Maximum recording duration in seconds
+  max_recording_duration: 30
+
+# Terminal UI settings
+ui:
+  # Show conversation transcripts
+  show_transcripts: true
+
+  # Show microphone level meter (future feature)
+  show_audio_levels: false
+
+  # Show timestamps on messages
+  show_timestamps: false
+
+  # Theme (dark or light)
+  theme: dark

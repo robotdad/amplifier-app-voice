@@ -11,6 +11,8 @@ dependencies = [
     "rich>=13.0.0",
     "pyaudio>=0.2.14",
     "numpy>=1.24.0",
+    "pynput>=1.7.6",
+    "pyyaml>=6.0",
     "amplifier-core",
 ]
 
@@ -21,7 +23,7 @@ amplifier-voice = "amplifier_app_voice.main:main"
 package = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["amplifier_app_voice"]
+packages = ["src/amplifier_app_voice"]
 
 [tool.hatch.metadata]
 allow-direct-references = true
@@ -35,3 +37,8 @@ dev = ["pytest>=8.4.2"]
 
 [tool.uv.sources]
 amplifier-core = { git = "https://github.com/microsoft/amplifier-core", branch = "main" }
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: marks tests as integration tests (requires real audio devices and API key)"
+]

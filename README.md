@@ -16,6 +16,21 @@ A standalone voice assistant application demonstrating Amplifier's audio capabil
 
 ## Quick Start
 
+### Prerequisites
+
+**System dependency** (PortAudio):
+```bash
+# macOS
+brew install portaudio
+
+# Linux (Ubuntu/Debian)
+sudo apt-get install portaudio19-dev
+
+# Windows - no system dependencies needed
+```
+
+See [Audio Setup Guide](docs/AUDIO_SETUP.md) for detailed instructions.
+
 ### Run without installing (uvx)
 
 ```bash
@@ -23,29 +38,35 @@ A standalone voice assistant application demonstrating Amplifier's audio capabil
 export OPENAI_API_KEY="sk-..."
 
 # Run directly
-uvx --from git+https://github.com/microsoft/amplifier-app-voice@main amplifier-voice
+uvx --from git+https://github.com/robotdad/amplifier-app-voice@main amplifier-voice
 ```
 
 ### Install and run
 
 ```bash
 # Install
-uv tool install git+https://github.com/microsoft/amplifier-app-voice@main
+uv tool install git+https://github.com/robotdad/amplifier-app-voice@main
 
 # Run
 amplifier-voice
+
+# Or use the quick start script
+bash examples/simple_conversation.sh
 ```
 
 ### Local development
 
 ```bash
 # Clone and install
-git clone https://github.com/microsoft/amplifier-app-voice
+git clone https://github.com/robotdad/amplifier-app-voice
 cd amplifier-app-voice
 uv sync --dev
 
 # Run locally
 uv run amplifier-voice
+
+# Or run examples
+bash examples/simple_conversation.sh
 ```
 
 ## Usage
@@ -163,7 +184,17 @@ uv run pytest
 
 # Run with debug logging
 uv run amplifier-voice --debug
+
+# List audio devices
+python -m amplifier_app_voice.audio.utils --list-devices
 ```
+
+## Documentation
+
+- [Architecture](docs/ARCHITECTURE.md) - Component design and data flow
+- [Audio Setup](docs/AUDIO_SETUP.md) - PortAudio installation and troubleshooting
+- [Keyboard Controls](docs/KEYBOARD_CONTROLS.md) - Interaction reference
+- [Configuration](docs/CONFIGURATION.md) - Complete config file reference
 
 ## Roadmap
 
