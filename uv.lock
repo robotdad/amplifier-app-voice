@@ -8,6 +8,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "amplifier-core" },
+    { name = "amplifier-profiles" },
     { name = "click" },
     { name = "numpy" },
     { name = "pyaudio" },
@@ -24,6 +25,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "amplifier-core", git = "https://github.com/microsoft/amplifier-core?branch=main" },
+    { name = "amplifier-profiles", git = "https://github.com/microsoft/amplifier-profiles?branch=main" },
     { name = "click", specifier = ">=8.1.0" },
     { name = "numpy", specifier = ">=1.24.0" },
     { name = "pyaudio", specifier = ">=0.2.14" },
@@ -36,6 +38,14 @@ requires-dist = [
 dev = [{ name = "pytest", specifier = ">=8.4.2" }]
 
 [[package]]
+name = "amplifier-collections"
+version = "0.1.0"
+source = { git = "https://github.com/microsoft/amplifier-collections?branch=main#20c290af2d5f283cc957fb9480daec602fd25998" }
+dependencies = [
+    { name = "pydantic" },
+]
+
+[[package]]
 name = "amplifier-core"
 version = "1.0.0"
 source = { git = "https://github.com/microsoft/amplifier-core?branch=main#22acffb066e48f2de20490278e0e2821b301ea0a" }
@@ -44,6 +54,15 @@ dependencies = [
     { name = "pyyaml" },
     { name = "tomli" },
     { name = "typing-extensions" },
+]
+
+[[package]]
+name = "amplifier-profiles"
+version = "0.1.0"
+source = { git = "https://github.com/microsoft/amplifier-profiles?branch=main#a852f0f22924272747b1362216f3af4f6c05b63d" }
+dependencies = [
+    { name = "amplifier-collections" },
+    { name = "pydantic" },
 ]
 
 [[package]]

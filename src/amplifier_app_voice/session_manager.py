@@ -1,6 +1,10 @@
 """Amplifier session management for amplifier-app-voice."""
 
+from pathlib import Path
+
 from amplifier_core import AmplifierSession
+from amplifier_profiles import ProfileLoader
+from amplifier_profiles import compile_profile_to_mount_plan
 
 from .config import AppConfig
 
@@ -22,10 +26,7 @@ class SessionManager:
         """
         Create Amplifier session with OpenAI Realtime provider.
 
-        Session structure per docs/ARCHITECTURE.md:
-        - orchestrator: loop-basic
-        - context: context-simple
-        - provider: provider-openai-realtime with config settings
+        Loads profile from profiles/voice.md and applies app config overrides.
 
         Returns:
             Configured AmplifierSession instance
@@ -33,37 +34,25 @@ class SessionManager:
         Raises:
             RuntimeError: If session creation fails
         """
-        session_config = {
-            "session": {
-                "orchestrator": {
-                    "module": "loop-basic",
-                    "source": "git+https://github.com/microsoft/amplifier-module-loop-basic@main",
-                },
-                "context": {
-                    "module": "context-simple",
-                    "source": "git+https://github.com/microsoft/amplifier-module-context-simple@main",
-                },
-            },
-            "providers": [
-                {
-                    "module": "provider-openai-realtime",
-                    "source": "git+https://github.com/robotdad/amplifier-module-provider-openai-realtime@main",
-                    "config": {
-                        "api_key": self.config.api_key,
-                        "model": self.config.model,
-                        "voice": self.config.voice,
-                        "temperature": self.config.temperature,
-                    },
-                }
-            ],
-        }
+        # Load voice profile from profiles/voice.md
+        profile_path = Path(__file__).parent.parent.parent / "profiles"
+        loader = ProfileLoader(search_paths=[profile_path])
+        profile = loader.load_profile("voice")
 
-        # Add max_response_tokens if specified
-        if self.config.max_response_tokens is not None:
-            session_config["providers"][0]["config"]["max_response_tokens"] = self.config.max_response_tokens
+        # Compile to mount plan
+        mount_plan = compile_profile_to_mount_plan(profile)
+
+        # Override provider config with app settings
+        if mount_plan.get("providers"):
+            mount_plan["providers"][0]["config"]["api_key"] = self.config.api_key
+            mount_plan["providers"][0]["config"]["model"] = self.config.model
+            mount_plan["providers"][0]["config"]["voice"] = self.config.voice
+            mount_plan["providers"][0]["config"]["temperature"] = self.config.temperature
+            if self.config.max_response_tokens:
+                mount_plan["providers"][0]["config"]["max_response_tokens"] = self.config.max_response_tokens
 
         try:
-            self.session = AmplifierSession(config=session_config)
+            self.session = AmplifierSession(config=mount_plan)
             await self.session.__aenter__()
             return self.session
         except Exception as e:
