@@ -35,13 +35,19 @@ class SessionManager:
         """
         session_config = {
             "session": {
-                "orchestrator": "loop-basic",
-                "context": "context-simple",
+                "orchestrator": {
+                    "module": "loop-basic",
+                    "source": "git+https://github.com/microsoft/amplifier-module-loop-basic@main",
+                },
+                "context": {
+                    "module": "context-simple",
+                    "source": "git+https://github.com/microsoft/amplifier-module-context-simple@main",
+                },
             },
             "providers": [
                 {
                     "module": "provider-openai-realtime",
-                    "source": "git+https://github.com/microsoft/amplifier-module-provider-openai-realtime@main",
+                    "source": "git+https://github.com/robotdad/amplifier-module-provider-openai-realtime@main",
                     "config": {
                         "api_key": self.config.api_key,
                         "model": self.config.model,
