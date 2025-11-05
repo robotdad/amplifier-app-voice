@@ -1,44 +1,48 @@
-"""Keyboard input handling using pynput for cross-platform detection."""
+"""Keyboard input handling using readchar for terminal-specific detection."""
 
 import asyncio
+import threading
 
-from pynput import keyboard
+import readchar
 
 
 class KeyboardHandler:
-    """Handles keyboard input with spacebar detection."""
+    """Handles keyboard input with spacebar detection in terminal."""
 
     def __init__(self: "KeyboardHandler") -> None:
-        """Initialize keyboard listener and async events."""
+        """Initialize keyboard handler and async events."""
         self.space_pressed = False
-        self.listener: keyboard.Listener | None = None
+        self._running = False
+        self._thread: threading.Thread | None = None
         self._press_event = asyncio.Event()
         self._release_event = asyncio.Event()
+        self._loop: asyncio.AbstractEventLoop | None = None
 
     def start(self: "KeyboardHandler") -> None:
-        """Start keyboard listener in background thread."""
-        self.listener = keyboard.Listener(on_press=self._on_press, on_release=self._on_release)
-        self.listener.start()
+        """Start keyboard detection in background thread."""
+        self._running = True
+        self._loop = asyncio.get_event_loop()
+        self._thread = threading.Thread(target=self._read_loop, daemon=True)
+        self._thread.start()
 
-    def _on_press(self: "KeyboardHandler", key: keyboard.Key | keyboard.KeyCode | None) -> None:
-        """Handle key press events.
-
-        Args:
-            key: Key that was pressed
-        """
-        if key == keyboard.Key.space and not self.space_pressed:
-            self.space_pressed = True
-            self._press_event.set()
-
-    def _on_release(self: "KeyboardHandler", key: keyboard.Key | keyboard.KeyCode | None) -> None:
-        """Handle key release events.
-
-        Args:
-            key: Key that was released
-        """
-        if key == keyboard.Key.space:
-            self.space_pressed = False
-            self._release_event.set()
+    def _read_loop(self: "KeyboardHandler") -> None:
+        """Background thread reading keyboard input."""
+        while self._running:
+            try:
+                key = readchar.readkey()
+                if key == " ":  # Spacebar
+                    if not self.space_pressed:
+                        # Press event
+                        self.space_pressed = True
+                        if self._loop:
+                            self._loop.call_soon_threadsafe(self._press_event.set)
+                    else:
+                        # Release event (second space = release)
+                        self.space_pressed = False
+                        if self._loop:
+                            self._loop.call_soon_threadsafe(self._release_event.set)
+            except Exception:
+                pass  # Ignore read errors
 
     async def wait_for_press(self: "KeyboardHandler") -> None:
         """Wait for spacebar press (async)."""
@@ -52,5 +56,6 @@ class KeyboardHandler:
 
     def stop(self: "KeyboardHandler") -> None:
         """Stop keyboard listener."""
-        if self.listener:
-            self.listener.stop()
+        self._running = False
+        if self._thread:
+            self._thread.join(timeout=1.0)
