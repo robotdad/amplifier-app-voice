@@ -115,11 +115,7 @@ async def async_main(config: AppConfig, debug: bool = False) -> None:
             # Access provider directly since session.execute() doesn't support audio yet
             try:
                 # Get the provider from session coordinator
-                provider = None
-                for name, mounted in session.coordinator._mounts.get("providers", {}).items():
-                    if name == "openai-realtime":
-                        provider = mounted
-                        break
+                provider = session.coordinator.mount_points["providers"].get("openai-realtime")
 
                 if provider:
                     # Call provider with audio message
