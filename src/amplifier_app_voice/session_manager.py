@@ -44,7 +44,6 @@ class SessionManager:
         # Add system install location if available
         try:
             import sys
-            from pathlib import Path
 
             site_packages = Path(sys.prefix) / "share" / "amplifier_app_voice" / "profiles"
             if site_packages.exists():
