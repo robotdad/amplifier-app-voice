@@ -34,11 +34,19 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
-dev = ["pytest>=8.4.2"]
+dev = [
+    "pytest>=8.4.2",
+    "amplifier-module-loop-basic",
+    "amplifier-module-context-simple",
+    "amplifier-module-provider-openai-realtime",
+]
 
 [tool.uv.sources]
 amplifier-core = { git = "https://github.com/microsoft/amplifier-core", branch = "main" }
 amplifier-profiles = { git = "https://github.com/microsoft/amplifier-profiles", branch = "main" }
+amplifier-module-loop-basic = { path = "../amplifier-module-loop-basic", editable = true }
+amplifier-module-context-simple = { path = "../amplifier-module-context-simple", editable = true }
+amplifier-module-provider-openai-realtime = { path = "../amplifier-module-provider-openai-realtime", editable = true }
 
 [tool.pytest.ini_options]
 markers = [
