@@ -1,0 +1,27 @@
+---
+profile:
+  name: voice
+  version: 1.0.0
+  description: Voice assistant configuration for OpenAI Realtime API
+
+session:
+  orchestrator:
+    module: loop-basic
+    source: git+https://github.com/microsoft/amplifier-module-loop-basic@main
+  context:
+    module: context-simple
+    source: git+https://github.com/microsoft/amplifier-module-context-simple@main
+
+providers:
+  - module: provider-openai-realtime
+    source: git+https://github.com/robotdad/amplifier-module-provider-openai-realtime@main
+    config:
+      api_key: ${OPENAI_API_KEY}
+      model: gpt-4o-realtime-preview-2024-12-17
+      voice: alloy
+      temperature: 0.7
+---
+
+Voice assistant profile for desktop application.
+
+Uses OpenAI Realtime API for native speech-to-speech interaction.

@@ -14,6 +14,7 @@ dependencies = [
     "pynput>=1.7.6",
     "pyyaml>=6.0",
     "amplifier-core",
+    "amplifier-profiles",
 ]
 
 [project.scripts]
@@ -37,6 +38,7 @@ dev = ["pytest>=8.4.2"]
 
 [tool.uv.sources]
 amplifier-core = { git = "https://github.com/microsoft/amplifier-core", branch = "main" }
+amplifier-profiles = { git = "https://github.com/microsoft/amplifier-profiles", branch = "main" }
 
 [tool.pytest.ini_options]
 markers = [
