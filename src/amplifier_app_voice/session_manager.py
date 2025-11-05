@@ -35,8 +35,24 @@ class SessionManager:
             RuntimeError: If session creation fails
         """
         # Load voice profile from profiles/voice.md
-        profile_path = Path(__file__).parent.parent.parent / "profiles"
-        loader = ProfileLoader(search_paths=[profile_path])
+        # Try package directory first (local dev), then installed location (uvx)
+        profile_paths = [
+            Path(__file__).parent.parent.parent / "profiles",  # Local dev
+            Path(__file__).parent.parent / "profiles",  # Also try closer
+        ]
+
+        # Add system install location if available
+        try:
+            import sys
+            from pathlib import Path
+
+            site_packages = Path(sys.prefix) / "share" / "amplifier_app_voice" / "profiles"
+            if site_packages.exists():
+                profile_paths.append(site_packages)
+        except Exception:
+            pass
+
+        loader = ProfileLoader(search_paths=profile_paths)
         profile = loader.load_profile("voice")
 
         # Compile to mount plan
