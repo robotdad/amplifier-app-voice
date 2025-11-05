@@ -302,7 +302,7 @@ class KeyboardHandler:
         """Stop keyboard listener."""
 ```
 
-**Implementation Note**: Uses pynput library for cross-platform keyboard detection
+**Implementation Note**: Uses readchar library for terminal keyboard input capture
 
 ## Data Flow
 
@@ -500,7 +500,7 @@ except PermissionError:
 
 - **Single async main loop**: All coordination in one async function
 - **PyAudio callbacks**: Run in background threads (managed by PyAudio)
-- **Keyboard listener**: Background thread (managed by pynput)
+- **Keyboard listener**: Background thread (managed by readchar)
 - **Amplifier session**: Async, runs in main event loop
 
 ## Future Architecture Considerations

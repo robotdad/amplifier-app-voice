@@ -121,30 +121,70 @@ ui:
   show_audio_levels: true
 ```
 
+## Module Composition
+
+This app demonstrates **Amplifier's modular architecture** by composing modules:
+
+### NEW Module (Built for This Project)
+
+**`amplifier-module-provider-openai-realtime`**
+- Native speech-to-speech via OpenAI Realtime API
+- WebSocket-based audio streaming
+- First audio-capable provider in Amplifier
+- Repository: https://github.com/robotdad/amplifier-module-provider-openai-realtime
+
+### EXISTING Modules (From Amplifier Ecosystem)
+
+**`amplifier-module-loop-basic`** - Turn-based orchestrator
+**`amplifier-module-context-simple`** - In-memory conversation history
+
+### How They're Composed
+
+**Profile-based** (like blog-creator):
+```yaml
+# profiles/voice.md
+session:
+  orchestrator:
+    module: loop-basic        # Existing
+  context:
+    module: context-simple    # Existing
+
+providers:
+  - module: provider-openai-realtime  # NEW
+    source: git+https://github.com/robotdad/amplifier-module-provider-openai-realtime@main
+```
+
+The app loads this profile and Amplifier assembles the modules automatically.
+
+**See [Module Composition](docs/MODULE_COMPOSITION.md) for detailed architecture.**
+
 ## Architecture
 
-### Components
+### App Components
 
 ```
 amplifier-app-voice/
 ├── src/amplifier_app_voice/
-│   ├── main.py           # Entry point, CLI setup
-│   ├── session.py        # Amplifier session management
+│   ├── main.py              # Entry point, CLI, main loop
+│   ├── config.py            # Configuration loading
+│   ├── session_manager.py   # Amplifier session wrapper
 │   ├── audio/
-│   │   ├── capture.py    # Microphone input
-│   │   ├── playback.py   # Speaker output
-│   │   └── buffer.py     # Audio buffering
+│   │   ├── capture.py       # Microphone input (PyAudio)
+│   │   ├── playback.py      # Speaker output (PyAudio)
+│   │   └── utils.py         # Device listing
 │   └── ui/
-│       ├── terminal.py   # Terminal-based UI
-│       └── display.py    # Transcript/status display
+│       ├── terminal.py      # Terminal UI (Rich)
+│       └── keyboard.py      # Spacebar detection (readchar)
+└── profiles/
+    └── voice.md             # Module composition profile
 ```
 
 ### Philosophy
 
+- **Modular composition**: Mix NEW provider with EXISTING modules
+- **Profile-based**: Declarative module configuration
 - **Vertical slice**: Complete voice interaction end-to-end
-- **App-layer policy**: Audio I/O decisions live here, not in kernel
-- **Provider isolation**: Uses `amplifier-module-provider-openai-realtime`
-- **Tool integration**: Works with existing Amplifier tools
+- **Zero kernel changes**: Audio support added at edges
 
 ## Requirements
 
