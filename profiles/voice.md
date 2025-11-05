@@ -4,6 +4,12 @@ profile:
   version: "1.0.0"
   description: Voice assistant configuration for OpenAI Realtime API
 
+session:
+  orchestrator:
+    module: loop-basic
+  context:
+    module: context-simple
+
 providers:
   - module: provider-openai-realtime
     source: git+https://github.com/robotdad/amplifier-module-provider-openai-realtime@main
