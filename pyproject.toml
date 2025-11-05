@@ -16,6 +16,9 @@ dependencies = [
     "amplifier-core",
     "amplifier-profiles",
     "amplifier-module-resolution",
+    "amplifier-module-loop-basic",
+    "amplifier-module-context-simple",
+    "amplifier-module-provider-openai-realtime",
 ]
 
 [project.scripts]
@@ -40,18 +43,15 @@ build-backend = "hatchling.build"
 [dependency-groups]
 dev = [
     "pytest>=8.4.2",
-    "amplifier-module-loop-basic",
-    "amplifier-module-context-simple",
-    "amplifier-module-provider-openai-realtime",
 ]
 
 [tool.uv.sources]
 amplifier-core = { git = "https://github.com/microsoft/amplifier-core", branch = "main" }
 amplifier-profiles = { git = "https://github.com/microsoft/amplifier-profiles", branch = "main" }
 amplifier-module-resolution = { git = "https://github.com/microsoft/amplifier-module-resolution", branch = "main" }
-amplifier-module-loop-basic = { path = "../amplifier-module-loop-basic", editable = true }
-amplifier-module-context-simple = { path = "../amplifier-module-context-simple", editable = true }
-amplifier-module-provider-openai-realtime = { path = "../amplifier-module-provider-openai-realtime", editable = true }
+amplifier-module-loop-basic = { git = "https://github.com/microsoft/amplifier-module-loop-basic", branch = "main" }
+amplifier-module-context-simple = { git = "https://github.com/microsoft/amplifier-module-context-simple", branch = "main" }
+amplifier-module-provider-openai-realtime = { git = "https://github.com/robotdad/amplifier-module-provider-openai-realtime", branch = "main" }
 
 [tool.pytest.ini_options]
 markers = [
