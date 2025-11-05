@@ -111,23 +111,44 @@ async def async_main(config: AppConfig, debug: bool = False) -> None:
             ui.clear_status()
             ui.show_status("⏳ Sending to AI...", "cyan")
 
-            # For now, send simple text prompt
-            # Provider handles audio conversion internally
-            # In future iterations, could send actual audio when provider supports it
+            # Send actual audio to OpenAI Realtime API
+            # Access provider directly since session.execute() doesn't support audio yet
             try:
-                response = await session.execute("Respond based on audio input")
+                # Get the provider from session coordinator
+                provider = None
+                for name, mounted in session.coordinator._mounts.get("providers", {}).items():
+                    if name == "openai-realtime":
+                        provider = mounted
+                        break
 
-                # Display transcript
-                if config.show_transcripts:
-                    ui.show_transcript("assistant", str(response))
+                if provider:
+                    # Call provider with audio message
+                    audio_message = {
+                        "role": "user",
+                        "content": [{"type": "audio", "data": audio_data, "format": "pcm16", "sample_rate": 24000}],
+                    }
 
-                # Play audio response if available
-                # Note: Current provider returns text, but will return audio in raw field
-                # For now, we skip audio playback until provider audio support is ready
-                ui.show_status("🔊 Response received", "magenta")
+                    # Call provider directly with audio
+                    provider_response = await provider.complete([audio_message])
+
+                    # Extract transcript
+                    transcript = provider_response.content
+
+                    # Display transcript
+                    if config.show_transcripts:
+                        ui.show_transcript("assistant", transcript)
+
+                    # Play audio response
+                    if provider_response.raw and "audio_data" in provider_response.raw:
+                        ui.show_status("🔊 Playing response...", "magenta")
+                        audio_playback.play(provider_response.raw["audio_data"])
+                    else:
+                        ui.show_status("🔊 Response received (no audio)", "magenta")
+                else:
+                    ui.show_status("❌ Provider not found", "red")
 
             except Exception as e:
-                ui.show_status(f"Error: {e}", "red")
+                ui.show_status(f"❌ Error: {e}", "red")
 
             # Ready for next input
             ui.show_status("Press SPACE to talk...", "green")
