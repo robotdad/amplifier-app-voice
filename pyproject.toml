@@ -15,6 +15,7 @@ dependencies = [
     "pyyaml>=6.0",
     "amplifier-core",
     "amplifier-profiles",
+    "amplifier-module-resolution",
 ]
 
 [project.scripts]
@@ -47,6 +48,7 @@ dev = [
 [tool.uv.sources]
 amplifier-core = { git = "https://github.com/microsoft/amplifier-core", branch = "main" }
 amplifier-profiles = { git = "https://github.com/microsoft/amplifier-profiles", branch = "main" }
+amplifier-module-resolution = { git = "https://github.com/microsoft/amplifier-module-resolution", branch = "main" }
 amplifier-module-loop-basic = { path = "../amplifier-module-loop-basic", editable = true }
 amplifier-module-context-simple = { path = "../amplifier-module-context-simple", editable = true }
 amplifier-module-provider-openai-realtime = { path = "../amplifier-module-provider-openai-realtime", editable = true }
