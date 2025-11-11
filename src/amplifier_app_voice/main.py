@@ -154,14 +154,20 @@ async def async_main(config: AppConfig, debug: bool = False) -> None:
                 provider = session.coordinator.mount_points["providers"].get("openai-realtime")
 
                 if provider:
-                    # Call provider with audio message
-                    audio_message = {
-                        "role": "user",
-                        "content": [{"type": "audio", "data": audio_data, "format": "pcm16", "sample_rate": 24000}],
-                    }
+                    # Build messages with system instruction for English responses
+                    messages = [
+                        {
+                            "role": "system",
+                            "content": "You are a helpful voice assistant. Always respond in English. Be concise, conversational, and friendly. When answering questions, provide clear and direct responses appropriate for voice interaction."
+                        },
+                        {
+                            "role": "user",
+                            "content": [{"type": "audio", "data": audio_data, "format": "pcm16", "sample_rate": 24000}],
+                        }
+                    ]
 
                     # Call provider directly with audio (provider emits provider:request and provider:response hooks)
-                    provider_response = await provider.complete([audio_message])
+                    provider_response = await provider.complete(messages)
 
                     # Extract transcript
                     transcript = provider_response.content
