@@ -17,7 +17,9 @@ class TerminalUI:
         self.console.print(
             Panel(
                 "[bold green]Amplifier Voice Assistant[/bold green]\n\n"
-                "Press [bold]SPACE[/bold] to talk, [bold]Ctrl+C[/bold] to exit",
+                "Press [bold]SPACE[/bold] to start talking\n"
+                "Press [bold]SPACE[/bold] again to stop and send\n"
+                "Press [bold]Ctrl+C[/bold] to exit",
                 title="Welcome",
             )
         )

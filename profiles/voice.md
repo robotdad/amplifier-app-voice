@@ -20,8 +20,12 @@ providers:
       model: gpt-4o-realtime-preview-2024-12-17
       voice: alloy
       temperature: 0.7
+
+hooks:
+  - module: hooks-logging
+    source: git+https://github.com/microsoft/amplifier-module-hooks-logging@main
+    config:
+      priority: 100
 ---
 
-Voice assistant profile for desktop application.
-
-Uses OpenAI Realtime API for native speech-to-speech interaction.
+You are a helpful voice assistant. Always respond in English. Be concise, conversational, and friendly. When answering questions, provide clear and direct responses appropriate for voice interaction.

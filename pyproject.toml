@@ -11,7 +11,7 @@ dependencies = [
     "rich>=13.0.0",
     "pyaudio>=0.2.14",
     "numpy>=1.24.0",
-    "readchar>=4.0.0",
+    "pynput>=1.7.6",
     "pyyaml>=6.0",
     "amplifier-core",
     "amplifier-profiles",
@@ -19,6 +19,7 @@ dependencies = [
     "amplifier-module-loop-basic",
     "amplifier-module-context-simple",
     "amplifier-module-provider-openai-realtime",
+    "amplifier-module-hooks-logging",
 ]
 
 [project.scripts]
@@ -52,6 +53,7 @@ amplifier-module-resolution = { git = "https://github.com/microsoft/amplifier-mo
 amplifier-module-loop-basic = { git = "https://github.com/microsoft/amplifier-module-loop-basic", branch = "main" }
 amplifier-module-context-simple = { git = "https://github.com/microsoft/amplifier-module-context-simple", branch = "main" }
 amplifier-module-provider-openai-realtime = { git = "https://github.com/robotdad/amplifier-module-provider-openai-realtime", branch = "main" }
+amplifier-module-hooks-logging = { git = "https://github.com/microsoft/amplifier-module-hooks-logging", branch = "main" }
 
 [tool.pytest.ini_options]
 markers = [
