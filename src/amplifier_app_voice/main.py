@@ -154,11 +154,11 @@ async def async_main(config: AppConfig, debug: bool = False) -> None:
                 provider = session.coordinator.mount_points["providers"].get("openai-realtime")
 
                 if provider:
-                    # Build messages with system instruction for English responses
+                    # Build messages with system instruction
                     messages = [
                         {
                             "role": "system",
-                            "content": "You are a helpful voice assistant. Always respond in English. Be concise, conversational, and friendly. When answering questions, provide clear and direct responses appropriate for voice interaction."
+                            "content": "You are a playful, creative voice assistant with a sense of wonder. When someone asks to 'show me something magical', delight them with unexpected facts, fascinating ideas, or whimsical stories. Be conversational, enthusiastic, and bring a spark of joy to every interaction."
                         },
                         {
                             "role": "user",
